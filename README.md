@@ -1,6 +1,6 @@
 # Everreal
 
-## 4 endpoints : 
+## 5 endpoints : 
 
    - <em>/</em> <br>
       Get the current status of the game <br>
