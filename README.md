@@ -1,4 +1,4 @@
-# everreal
+# Everreal
 
 ## 4 endpoints : 
 
@@ -15,6 +15,10 @@
    - <em>/autoPlay</em> <br>
       Automatically chose the next move to do  <br>
        - return the new board status and if the game is finished   
+
+   - <em>/fullAutoPlay</em> <br>
+      Automatically complete the board  <br>
+       - return the board completed    
    
    - <em>/play</em> <br>
       Play manually <br>
@@ -28,14 +32,14 @@
        
 ## Current tests status : 
 <pre>
-###### ---------------|---------|----------|---------|---------|-------------------
-###### File           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
-###### ---------------|---------|----------|---------|---------|-------------------
-###### All files      |     100 |    90.32 |     100 |     100 |                   
-######  enums         |     100 |      100 |     100 |     100 |                   
-######   Colors.ts    |     100 |      100 |     100 |     100 |                   
-######  models        |     100 |    89.66 |     100 |     100 |                   
-######   BoardGame.ts |     100 |    89.66 |     100 |     100 | 91,136-143        
-###### ---------------|---------|----------|---------|---------|-------------------
+ ---------------|---------|----------|---------|---------|-------------------
+ File           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+ ---------------|---------|----------|---------|---------|-------------------
+ All files      |     100 |    90.32 |     100 |     100 |                   
+  enums         |     100 |      100 |     100 |     100 |                   
+   Colors.ts    |     100 |      100 |     100 |     100 |                   
+  models        |     100 |    89.66 |     100 |     100 |                   
+   BoardGame.ts |     100 |    89.66 |     100 |     100 | 91,143-150         
+ ---------------|---------|----------|---------|---------|-------------------
 </pre>
        
