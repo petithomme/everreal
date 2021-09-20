@@ -2,17 +2,13 @@ import {Colors} from "../enums/Colors";
 import {Position} from "./Position";
 import {Cell} from "./Cell";
 
-export interface Board {
-    values: Colors[][];
-    colorsAvailable: Colors[];
-}
-
 export class BoardGame {
 
-    public board: Board;
+    private adjacentPositions: Position[] = [{x:-1, y:0}, {x:+1, y:0}, {x:0, y:-1},{x:0, y:+1}];
+    public board: Colors[][];
 
-    constructor(size: number, colorsAmount: number) {
-        this.board = this.createRandomGame(size, colorsAmount);
+    constructor() {
+        this.board = [];
     }
 
     private getRandomColors(colorsAmount: number): Colors[] {
@@ -34,10 +30,9 @@ export class BoardGame {
         return board;
     }
 
-    private createRandomGame(size: number, colorsAmount: number): Board {
+    private createRandomGame(size: number, colorsAmount: number): Colors[][] {
         const colorsAvailable: Colors[] = this.getRandomColors(colorsAmount);
-        const values: Colors[][] = this.fillNewBoard(size, colorsAvailable);
-        return {values, colorsAvailable }
+        return this.fillNewBoard(size, colorsAvailable);
     }
 
     private canStopRecursion(currentPosition: Position, size: number, alreadyTested: Position[]): boolean {
@@ -48,39 +43,37 @@ export class BoardGame {
 
     private getConnectedCells(): Position[] {
         const connectedCells: Position[] = [];
-        this.getConnectedCell(connectedCells, {x:0, y:0}, this.board.values[0][0], this.board.values.length, []);
+        this.getConnectedCell(connectedCells, {x:0, y:0}, this.board[0][0], this.board.length, []);
         return connectedCells;
     }
 
     private getConnectedCell(connectedCells: Position[], currentPosition: Position, color: Colors, size: number, alreadyTested: Position[]): void {
         if (!this.canStopRecursion(currentPosition, size, alreadyTested)) {
             alreadyTested.push(currentPosition);
-            if (this.board.values[currentPosition.x][currentPosition.y] == color) {
+            if (this.board[currentPosition.x][currentPosition.y] == color) {
                 connectedCells.push( currentPosition);
-                this.getConnectedCell(connectedCells, {x: currentPosition.x - 1, y: currentPosition.y}, color, size, alreadyTested);
-                this.getConnectedCell(connectedCells, {x: currentPosition.x + 1, y: currentPosition.y}, color, size, alreadyTested);
-                this.getConnectedCell(connectedCells, {x: currentPosition.x, y: currentPosition.y - 1}, color, size, alreadyTested);
-                this.getConnectedCell(connectedCells, {x: currentPosition.x, y: currentPosition.y + 1}, color, size, alreadyTested);
+                this.adjacentPositions.forEach( pos => {
+                    this.getConnectedCell(connectedCells, {x: currentPosition.x + pos.x, y: currentPosition.y + pos.y}, color, size, alreadyTested);
+                });
             }
         }
     }
 
     private getEdgeCells(): Cell[] {
         const edgeCells: Cell[] = [];
-        this.checkEdgeCells(edgeCells, {x:0, y:0}, this.board.values[0][0], this.board.values.length, []);
+        this.checkEdgeCells(edgeCells, {x:0, y:0}, this.board[0][0], this.board.length, []);
         return edgeCells;
     }
 
-    private checkEdgeCells(edgeCells: Cell[], currentPosition: Position, colorToCheck: Colors, size: number, alreadyTested: Position[]) {
+    private checkEdgeCells(edgeCells: Cell[], currentPosition: Position, colorToCheck: Colors, size: number, alreadyTested: Position[]): void {
         if (!this.canStopRecursion(currentPosition, size, alreadyTested)) {
             alreadyTested.push(currentPosition);
-            if (this.board.values[currentPosition.x][currentPosition.y] != colorToCheck) {
-                edgeCells.push( {position: currentPosition, color: this.board.values[currentPosition.x][currentPosition.y] });
+            if (this.board[currentPosition.x][currentPosition.y] != colorToCheck) {
+                edgeCells.push( {position: currentPosition, color: this.board[currentPosition.x][currentPosition.y] });
             } else {
-                this.checkEdgeCells(edgeCells, {x: currentPosition.x - 1, y: currentPosition.y}, colorToCheck, size, alreadyTested);
-                this.checkEdgeCells(edgeCells, {x: currentPosition.x + 1, y: currentPosition.y}, colorToCheck, size, alreadyTested);
-                this.checkEdgeCells(edgeCells, {x: currentPosition.x, y: currentPosition.y - 1}, colorToCheck, size, alreadyTested);
-                this.checkEdgeCells(edgeCells, {x: currentPosition.x, y: currentPosition.y + 1}, colorToCheck, size, alreadyTested);
+                this.adjacentPositions.forEach( pos => {
+                    this.checkEdgeCells(edgeCells, {x: currentPosition.x + pos.x, y: currentPosition.y + pos.y}, colorToCheck, size, alreadyTested);
+                });
             }
         }
     }
@@ -99,16 +92,25 @@ export class BoardGame {
     }
 
     private changeColors(color: Colors): void {
-        console.log(color);
         var cells: Position[] = this.getConnectedCells();
         cells.forEach( (pos) => {
-            this.board.values[pos.x][pos.y] = color;
+            this.board[pos.x][pos.y] = color;
         })
+    }
+
+    public init(size: number, colorsAmount: number): void {
+        this.board = this.createRandomGame(size, colorsAmount);
+    }
+
+    public initFromValues(newValues: Colors[][]): void {
+        this.board = newValues;
     }
 
     public playAutomaticNext(): void {
         this.changeColors(this.getMostFrequentColorInCells(this.getEdgeCells()));
     }
 
-
+    public play(color: Colors): void {
+        this.changeColors(color);
+    }
 }
