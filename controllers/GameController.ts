@@ -36,6 +36,12 @@ export class GameController {
         res.status(200).json({data: game.board, done: game.done});
     }
 
+    public fullAutoPlay(req: Request, res: Response): void {
+        const game: BoardGame = this.getBoard();
+        game.playAutomatic();
+        res.status(200).json({data: game.board, done: game.done});
+    }
+
     public play(req: Request, res: Response): void {
         if (req.query.color === undefined) {
             res.status(500).json({error : "Color is missing from query"});

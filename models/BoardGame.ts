@@ -132,6 +132,13 @@ export class BoardGame {
         this.done = this.isFinished();
     }
 
+    public playAutomatic(): void {
+        while (!this.isFinished()) {
+            this.changeColors(this.getMostFrequentColorInCells(this.getEdgeCells()));
+        };
+        this.done = true;
+    }
+
     public playAutomaticNext(): void {
         if (!this.done) {
             this.changeColors(this.getMostFrequentColorInCells(this.getEdgeCells()));

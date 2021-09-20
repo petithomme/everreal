@@ -6,6 +6,7 @@ const app = express();
 app.use(cors());
 app.use('/', router);
 app.use('/autoPlay', router);
+app.use('/fullAutoPlay', router);
 app.use('/startNewGame', router);
 app.use('/play', router);
 
