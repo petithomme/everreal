@@ -132,15 +132,28 @@ describe('BoardGame', function() {
                 [1,1,1,1,1,1]
             ]);
             game.play(Colors.Red);
+            assert.equal(game.done, true);
+        });
+        it('Check manual play accept correct color only', function() {
+            const game: BoardGame = new BoardGame();
+            game.initFromValues([
+                [0,0,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1]
+            ]);
+            game.play(6);
             const theoricalResult: Colors[][] = [
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1],
+                [0,0,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
                 [1,1,1,1,1,1],
                 [1,1,1,1,1,1]
             ]
-            assert.equal(game.done, true);
+            assert.deepEqual(game.board, theoricalResult);
         });
     });
 });

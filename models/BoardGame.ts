@@ -92,11 +92,23 @@ export class BoardGame {
         return cells[savedIndex].color;
     }
 
+    private isColorValid(color:Colors): boolean {
+        let result: boolean = false;
+        this.board.forEach( (values) => values.forEach( v => {
+            if (v == color) {
+                result = true;
+            }
+        }));
+        return result;
+    }
+
     private changeColors(color: Colors): void {
-        var cells: Position[] = this.getConnectedCells();
-        cells.forEach( (pos) => {
-            this.board[pos.x][pos.y] = color;
-        })
+        if (this.isColorValid(color)) {
+            var cells: Position[] = this.getConnectedCells();
+            cells.forEach((pos) => {
+                this.board[pos.x][pos.y] = color;
+            });
+        }
     }
 
     private isFinished(): boolean {
