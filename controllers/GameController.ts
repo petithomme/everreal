@@ -17,7 +17,7 @@ export class GameController {
 
     public getStatus (req: Request, res: Response): void {
         const game: BoardGame = this.getBoard();
-        res.status(200).json({data: game.board});
+        res.status(200).json({data: game.board, done: game.done});
     }
 
     public startNewGame(req: Request, res: Response): void {
