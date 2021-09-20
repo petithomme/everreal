@@ -87,14 +87,6 @@ describe('BoardGame', function() {
                 [1,1,1,1,1,1]
             ]);
             game.playAutomaticNext();
-            const theoricalResult: Colors[][] = [
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1],
-                [1,1,1,1,1,1]
-            ]
             assert.equal(game.done, true);
         });
     });
