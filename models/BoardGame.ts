@@ -6,6 +6,7 @@ export class BoardGame {
 
     private adjacentPositions: Position[] = [{x:-1, y:0}, {x:+1, y:0}, {x:0, y:-1},{x:0, y:+1}];
     public board: Colors[][];
+    public done: boolean = false;
 
     constructor() {
         this.board = [];
@@ -98,19 +99,38 @@ export class BoardGame {
         })
     }
 
+    private isFinished(): boolean {
+        let result: boolean = true;
+        this.board.forEach( (values => {
+            const same: boolean = values.every( v => v == this.board[0][0]);
+            if (!same) {
+                result = false;
+            }
+        }));
+        return result;
+    }
+
     public init(size: number, colorsAmount: number): void {
         this.board = this.createRandomGame(size, colorsAmount);
+        this.done = this.isFinished();
     }
 
     public initFromValues(newValues: Colors[][]): void {
         this.board = newValues;
+        this.done = this.isFinished();
     }
 
     public playAutomaticNext(): void {
-        this.changeColors(this.getMostFrequentColorInCells(this.getEdgeCells()));
+        if (!this.done) {
+            this.changeColors(this.getMostFrequentColorInCells(this.getEdgeCells()));
+            this.done = this.isFinished();
+        }
     }
 
     public play(color: Colors): void {
-        this.changeColors(color);
+        if (!this.done) {
+            this.changeColors(color);
+            this.done = this.isFinished();
+        }
     }
 }

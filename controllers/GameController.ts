@@ -33,15 +33,19 @@ export class GameController {
         const game: BoardGame = this.getBoard();
         game.playAutomaticNext();
         fs.writeFileSync("./tmp/board.txt", game.board.join("-"));
-        res.status(200).json({data: game.board});
+        res.status(200).json({data: game.board, done: game.done});
     }
 
     public play(req: Request, res: Response): void {
-        const color: number = parseInt(<string>req.query.color);
-        const game: BoardGame = this.getBoard();
-        game.play(color);
-        fs.writeFileSync("./tmp/board.txt", game.board.join("-"));
-        res.status(200).json({data: game.board});
+        if (req.query.color === undefined) {
+            res.status(500).json({error : "Color is missing from query"});
+        } else {
+            const color: number = parseInt(<string>req.query.color);
+            const game: BoardGame = this.getBoard();
+            game.play(color);
+            fs.writeFileSync("./tmp/board.txt", game.board.join("-"));
+            res.status(200).json({data: game.board, done: game.done});
+        }
     }
 }
 

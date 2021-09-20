@@ -76,6 +76,27 @@ describe('BoardGame', function() {
             ]
             assert.deepEqual(game.board, theoricalResult);
         });
+        it('Check auto play is done', function() {
+            const game: BoardGame = new BoardGame();
+            game.initFromValues([
+                [0,0,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1]
+            ]);
+            game.playAutomaticNext();
+            const theoricalResult: Colors[][] = [
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1]
+            ]
+            assert.equal(game.done, true);
+        });
     });
 
     describe('Describe play', function() {
@@ -99,6 +120,27 @@ describe('BoardGame', function() {
                 [0,0,1,1,2,2]
             ]
             assert.deepEqual(game.board, theoricalResult);
+        });
+        it('Check manual play is done', function() {
+            const game: BoardGame = new BoardGame();
+            game.initFromValues([
+                [0,0,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
+                [0,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1]
+            ]);
+            game.play(Colors.Red);
+            const theoricalResult: Colors[][] = [
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1]
+            ]
+            assert.equal(game.done, true);
         });
     });
 });
